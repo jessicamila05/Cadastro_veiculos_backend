@@ -6,8 +6,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({exended: false}));
 
-require("./controllers/authController")(app);
-require("./controllers/vehiclesController")(app);
+//importando as class controllers...
+require("./app/controllers/index")(app);
+
 
 
 app.listen(3000);
