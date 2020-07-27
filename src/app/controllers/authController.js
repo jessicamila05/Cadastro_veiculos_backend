@@ -28,6 +28,7 @@ router.post("/register", async (req, res) => {
 
 
         const user = await User.create(req.body);
+       
         user.password = undefined;
 
         return res.send({
@@ -51,15 +52,12 @@ router.post("/authenticate", async (req, res) => {
         return res.status(400).send({error: "Ivalid Password"});
 
     user.password = undefined;
-
-    const token = jwt.sign({id: user.id}, authConfig.secret, {
-        expiresIn: 86400,
-    });
     
     res.send({
-        user, 
-        token: generateToken({id: user.id}),
+        user,
+        token:generateToken({id: user.id}),
     });
+
 });
 
 router.post("/forgot_password", async (req, res) => {
@@ -78,7 +76,7 @@ router.post("/forgot_password", async (req, res) => {
 
         await User.findByIdAndUpdate(user, id, {
             "$set": {
-                passwordResetToken: token,
+                passordResetToken: token,
                 passwordResetExpires: now,
             }
         });
