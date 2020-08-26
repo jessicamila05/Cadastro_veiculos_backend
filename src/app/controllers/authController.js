@@ -1,21 +1,21 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+//const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const mailer = require("../../modules/mailer");
 
 
-const authConfig = require("../../config/auth");
+//const authConfig = require("../../config/auth");
 
 const User = require("../models/user");
 
 const router = express.Router();
 
-function generateToken(params ={}){
+/*function generateToken(params ={}){
     return jwt.sign(params, authConfig.secret, {
         expiresIn:86400,
     });
-}
+}*/
 
 router.post("/register", async (req, res) => {
 
@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
 
         return res.send({
             user, 
-            token: generateToken({id: user.id}),
+            //token: generateToken({id: user.id}),
         });
     }catch (err){
         return res.status(400).send({error: "Registration failed"});
@@ -54,8 +54,8 @@ router.post("/authenticate", async (req, res) => {
     user.password = undefined;
     
     res.send({
-        user,
-        token:generateToken({id: user.id}),
+        user
+        //token:generateToken({id: user.id}),
     });
 
 });
@@ -69,23 +69,23 @@ router.post("/forgot_password", async (req, res) => {
         if(!user)
             return res.status(400).send({error: "User not found"});
 
-        const token = crypto.randombytes(20).toString('hex');
+        //const token = crypto.randombytes(20).toString('hex');
 
         const now = new Date();
         now.setHours(now.getHours() + 1);
 
-        await User.findByIdAndUpdate(user, id, {
+        /*await User.findByIdAndUpdate(user, id, {
             "$set": {
-                passordResetToken: token,
+                //keykeypassordResetToken: token,
                 passwordResetExpires: now,
             }
-        });
+        });*/
 
         mailer.sendmail({
             to: email,
             from: "jessica.camila05@gmail.com",
             template: "auth/forgot_password",
-            contex: {token},
+            contex: {id},
 
         }, (err) => {
             if(err)
@@ -100,12 +100,12 @@ router.post("/forgot_password", async (req, res) => {
     }
 });
 
-router.post("/reset_password", async(req, res) => {
-    const{email, toker, password} = req.body;
+/*router.post("/reset_password", async(req, res) => {
+    const{email, toker, password, } = req.body;
 
     try{
         const user = await User.findOne({email})
-            .select("+passwordResetToken passwordResetExpires");
+            //.select("+passwordResetToken passwordResetExpires");
         
         if(!user)
             return res.status(400).send({error: "User not found"});
@@ -114,8 +114,8 @@ router.post("/reset_password", async(req, res) => {
             return res.status(400).send({error: "tooken invalid"});
 
         const now = new Date();
-
-        if (now > user.passwordResentExpires)
+        
+       if (now > user.passwordResentExpires)
             return res.status(400).send({error: "Token expired, generate a new one"});
 
         user.password = password;
@@ -127,6 +127,6 @@ router.post("/reset_password", async(req, res) => {
     }catch (err) {
         res.status(400).send({error: "cannot reset password, try again"});
     }
-})
+})*/
 
 module.exports = app => app.use("/auth", router);

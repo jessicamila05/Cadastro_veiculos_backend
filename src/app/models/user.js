@@ -21,14 +21,14 @@ const UserSchema = new mongoose.Schema({
         require: true,
         select: false, 
     },
-    passwordResetToken:{
+     /*passwordResetToken:{
         type:String,
         select:false,
-    },
-    passwordResetExpires:{
+    },*/
+    /*passwordResetExpires:{
         type:Date,
         select:false,
-    },
+    },*/
 
     createdAt:{
         type: Date,

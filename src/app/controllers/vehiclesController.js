@@ -1,11 +1,11 @@
 const express = require("express");
-const authMiddleware = require("../middlewares/auth");
+//const authMiddleware = require("../middlewares/auth");
 
 const Vehicle = require("../models/vehicle");
 
 const router = express.Router();
 
-router.use(authMiddleware);
+//router.use(authMiddleware);
 
 //List..
 router.get("/", async (req, res) => {
@@ -34,6 +34,8 @@ router.post("/", async (req, res) => {
             modelVehicle,
             licensePlate,
             manufacturer,
+            purchasePrice,
+            saleValue,
             purchaseDate,
             saleDate,   
             situation
@@ -42,6 +44,8 @@ router.post("/", async (req, res) => {
             modelVehicle, 
             licensePlate,
             manufacturer,
+            purchasePrice,
+            saleValue,
             purchaseDate,
             saleDate,   
             situation,
